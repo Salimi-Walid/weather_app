@@ -1,7 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:weather_app/reserch/textfeild.dart'; // Ensure this import is correct
+import 'package:intl/intl.dart';
+import 'package:lottie/lottie.dart';
+import 'package:weather_app/reserch/textfeild.dart';
 import 'package:weather_app/survice/wather_survice.dart';
+
 // Import your WeatherService
 
 class Hompage extends StatefulWidget {
@@ -14,8 +17,9 @@ class Hompage extends StatefulWidget {
 class _HompageState extends State<Hompage> {
   final WeatherService weatherService = WeatherService();
   Map<String, dynamic>? weatherData;
-  String city = 'New York';
-  bool isLoading = true;
+  String city = 'Sidi Slimane';
+  TextEditingController cityController = TextEditingController();
+  bool isLoading = false;
 
   @override
   void initState() {
@@ -37,7 +41,6 @@ class _HompageState extends State<Hompage> {
       setState(() {
         isLoading = false;
       });
-      // Handle error (e.g., show a message to the user)
     }
   }
 
@@ -57,9 +60,12 @@ class _HompageState extends State<Hompage> {
                       bottomRight: Radius.circular(30))),
               child: Column(
                 children: [
-                  const Textfeild(),
+                  Textfeild(
+                    controller: cityController,
+                    onSearch: fetchWeather,
+                  ),
                   if (isLoading)
-                    CircularProgressIndicator()
+                    const CircularProgressIndicator()
                   else if (weatherData != null) ...[
                     Text(
                       weatherData!['name'],
@@ -70,15 +76,19 @@ class _HompageState extends State<Hompage> {
                               fontWeight: FontWeight.bold)),
                     ),
                     Text(
-                      '06 September 2024', // Replace with dynamic date if needed
+                      DateFormat('dd MMMM yyyy')
+                          .format(DateTime.now()), // Format the current date
                       style: GoogleFonts.openSans(
-                          textStyle: const TextStyle(
-                              color: Color.fromARGB(225, 255, 255, 255),
-                              fontSize: 15,
-                              fontWeight: FontWeight.bold)),
+                        textStyle: const TextStyle(
+                          color: Color.fromARGB(225, 255, 255, 255),
+                          fontSize: 15,
+                          fontWeight: FontWeight.bold,
+                        ),
+                      ),
                     ),
-                    Image.asset(
-                        'assets/p1.jpg'), // Ensure image path is correct
+                    // image for weather
+                    Lottie.asset(
+                        'assets/sun and winter.json'), // Ensure image path is correct
                     Text(
                       '${weatherData!['main']['temp']}°C',
                       style: GoogleFonts.openSans(
