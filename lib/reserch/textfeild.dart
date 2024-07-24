@@ -5,13 +5,15 @@ class Textfeild extends StatefulWidget {
   final TextEditingController controller;
   final VoidCallback onSearch;
   const Textfeild(
-      {super.key, required this.controller, required this.onSearch});
+      {super.key, required this.onSearch, required this.controller});
 
   @override
   State<Textfeild> createState() => _TextfeildState();
 }
 
 class _TextfeildState extends State<Textfeild> {
+  //final TextEditingController _controller = TextEditingController();
+
   @override
   Widget build(BuildContext context) {
     return Container(
