@@ -7,8 +7,6 @@ import 'package:lottie/lottie.dart';
 import 'package:weather_app/reserch/textfeild.dart';
 import 'package:weather_app/survice/wather_survice.dart';
 
-// Import your WeatherService
-
 class Hompage extends StatefulWidget {
   const Hompage({super.key});
 
@@ -91,101 +89,107 @@ class _HompageState extends State<Hompage> {
   Widget build(BuildContext context) {
     return Scaffold(
       body: SingleChildScrollView(
-        child: Column(
-          children: [
-            Container(
-              width: double.infinity,
-              height: 700,
-              decoration: const BoxDecoration(
-                  color: Color.fromARGB(155, 0, 105, 243),
-                  borderRadius: BorderRadius.only(
-                      bottomLeft: Radius.circular(30),
-                      bottomRight: Radius.circular(30))),
-              child: Column(
-                children: [
-                  // textfeild for reserching city
-                  Textfeild(
-                    onSearch: fetchWeather,
-                    controller: cityController,
-                  ),
-                  // name and date and image
-                  if (isLoading)
-                    const CircularProgressIndicator()
-                  else if (weatherData != null) ...[
-                    Text(
-                      weatherData!['name'],
-                      style: GoogleFonts.openSans(
-                          textStyle: const TextStyle(
-                              color: Color.fromARGB(255, 255, 255, 255),
-                              fontSize: 20,
-                              fontWeight: FontWeight.bold)),
-                    ),
-                    // day
-                    Text(
-                      DateFormat('dd MMMM yyyy').format(DateTime.now()),
-                      style: GoogleFonts.openSans(
-                        textStyle: const TextStyle(
-                          color: Color.fromARGB(225, 255, 255, 255),
-                          fontSize: 15,
-                          fontWeight: FontWeight.bold,
-                        ),
-                      ),
-                    ),
-                    // image for weather
-                    Lottie.asset(
-                      getAnimationForWeather(
-                          weatherData!['weather'][0]['main']),
-                    ),
-                    // darajat lharara in city
-                    Text(
-                      '${weatherData!['main']['temp']}°C',
-                      style: GoogleFonts.openSans(
-                          textStyle: const TextStyle(
-                              color: Color.fromARGB(255, 255, 255, 255),
-                              fontSize: 60,
-                              fontWeight: FontWeight.bold)),
-                    ),
-                  ] else
-                    // ila malgach city return this
-                    const Text(
-                      'Failed to load weather data',
-                      style: TextStyle(color: Colors.red),
-                    ),
-                ],
-              ),
+          child: Column(children: [
+        Container(
+          width: double.infinity,
+          height: 700,
+          decoration: const BoxDecoration(
+            borderRadius: BorderRadius.only(
+              bottomLeft: Radius.circular(30),
+              bottomRight: Radius.circular(30),
             ),
-            if (weatherData != null)
-              Card(
-                elevation: 4,
-                shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(30),
+            image: DecorationImage(
+              image: AssetImage(
+                'assets/cloud-in-blue-sky.jpg',
+              ),
+              fit: BoxFit.cover,
+            ),
+          ),
+          child: Column(
+            children: [
+              // textfeild for reserching city
+              Textfeild(
+                onSearch: fetchWeather,
+                controller: cityController,
+              ),
+              // name and date and image
+              if (isLoading)
+                const CircularProgressIndicator()
+              else if (weatherData != null) ...[
+                Text(
+                  weatherData!['name'],
+                  style: GoogleFonts.openSans(
+                      textStyle: const TextStyle(
+                          color: Color.fromARGB(255, 255, 255, 255),
+                          fontSize: 20,
+                          fontWeight: FontWeight.bold)),
                 ),
-                margin: const EdgeInsets.all(15),
-                child: Padding(
-                  padding: const EdgeInsets.all(20),
-                  child: Column(
-                    children: [
-                      const Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          Padding(
-                            padding: EdgeInsets.only(left: 30),
-                            child: Icon(Icons.cloudy_snowing, size: 30),
-                          ),
-                          Icon(Icons.air, size: 30),
-                          Padding(
-                            padding: EdgeInsets.only(right: 15),
-                            child: Icon(Icons.visibility, size: 30),
-                          ),
-                        ],
-                      ),
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          Padding(
-                            padding: const EdgeInsets.only(left: 30),
-                            child: Text(
-                              '${weatherData!['main']['humidity']}%',
+                // day
+                Text(
+                  DateFormat('dd MMMM yyyy').format(DateTime.now()),
+                  style: GoogleFonts.openSans(
+                    textStyle: const TextStyle(
+                      color: Color.fromARGB(225, 255, 255, 255),
+                      fontSize: 15,
+                      fontWeight: FontWeight.bold,
+                    ),
+                  ),
+                ),
+                // image for weather
+                Lottie.asset(
+                  getAnimationForWeather(weatherData!['weather'][0]['main']),
+                ),
+                // darajat lharara in city
+                Text(
+                  '${weatherData!['main']['temp']}°C',
+                  style: GoogleFonts.openSans(
+                      textStyle: const TextStyle(
+                          color: Color.fromARGB(255, 255, 255, 255),
+                          fontSize: 60,
+                          fontWeight: FontWeight.bold)),
+                ),
+                Card(
+                  elevation: 4,
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(30),
+                  ),
+                  margin: const EdgeInsets.all(15),
+                  child: Padding(
+                    padding: const EdgeInsets.all(20),
+                    child: Column(
+                      children: [
+                        const Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            Padding(
+                              padding: EdgeInsets.only(left: 30),
+                              child: Icon(Icons.cloudy_snowing, size: 30),
+                            ),
+                            Icon(Icons.air, size: 30),
+                            Padding(
+                              padding: EdgeInsets.only(right: 15),
+                              child: Icon(Icons.visibility, size: 30),
+                            ),
+                          ],
+                        ),
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            Padding(
+                              padding: const EdgeInsets.only(left: 30),
+                              child: Text(
+                                '${weatherData!['main']['humidity']}%',
+                                style: GoogleFonts.openSans(
+                                  textStyle: const TextStyle(
+                                    color: Colors.black,
+                                    fontSize: 20,
+                                    fontWeight: FontWeight.bold,
+                                  ),
+                                ),
+                              ),
+                            ),
+                            Text(
+                              '${weatherData!['wind']['speed']} km/h',
                               style: GoogleFonts.openSans(
                                 textStyle: const TextStyle(
                                   color: Colors.black,
@@ -194,46 +198,23 @@ class _HompageState extends State<Hompage> {
                                 ),
                               ),
                             ),
-                          ),
-                          Text(
-                            '${weatherData!['wind']['speed']} km/h',
-                            style: GoogleFonts.openSans(
-                              textStyle: const TextStyle(
-                                color: Colors.black,
-                                fontSize: 20,
-                                fontWeight: FontWeight.bold,
+                            Text(
+                              '${weatherData!['visibility'] / 1000} km',
+                              style: GoogleFonts.openSans(
+                                textStyle: const TextStyle(
+                                  color: Colors.black,
+                                  fontSize: 20,
+                                  fontWeight: FontWeight.bold,
+                                ),
                               ),
                             ),
-                          ),
-                          Text(
-                            '${weatherData!['visibility'] / 1000} km',
-                            style: GoogleFonts.openSans(
-                              textStyle: const TextStyle(
-                                color: Colors.black,
-                                fontSize: 20,
-                                fontWeight: FontWeight.bold,
-                              ),
-                            ),
-                          ),
-                        ],
-                      ),
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          Text(
-                            weatherData!['weather'][0]['description'],
-                            style: GoogleFonts.openSans(
-                              textStyle: const TextStyle(
-                                color: Colors.black,
-                                fontSize: 15,
-                                fontWeight: FontWeight.bold,
-                              ),
-                            ),
-                          ),
-                          Padding(
-                            padding: const EdgeInsets.only(right: 18),
-                            child: Text(
-                              'Air',
+                          ],
+                        ),
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            Text(
+                              weatherData!['weather'][0]['description'],
                               style: GoogleFonts.openSans(
                                 textStyle: const TextStyle(
                                   color: Colors.black,
@@ -242,26 +223,45 @@ class _HompageState extends State<Hompage> {
                                 ),
                               ),
                             ),
-                          ),
-                          Text(
-                            'Visibility',
-                            style: GoogleFonts.openSans(
-                              textStyle: const TextStyle(
-                                color: Colors.black,
-                                fontSize: 15,
-                                fontWeight: FontWeight.bold,
+                            Padding(
+                              padding: const EdgeInsets.only(right: 18),
+                              child: Text(
+                                'Air',
+                                style: GoogleFonts.openSans(
+                                  textStyle: const TextStyle(
+                                    color: Colors.black,
+                                    fontSize: 15,
+                                    fontWeight: FontWeight.bold,
+                                  ),
+                                ),
                               ),
                             ),
-                          ),
-                        ],
-                      ),
-                    ],
+                            Text(
+                              'Visibility',
+                              style: GoogleFonts.openSans(
+                                textStyle: const TextStyle(
+                                  color: Colors.black,
+                                  fontSize: 15,
+                                  fontWeight: FontWeight.bold,
+                                ),
+                              ),
+                            ),
+                          ],
+                        ),
+                      ],
+                    ),
                   ),
+                )
+              ] else
+                // ila malgach city return this
+                const Text(
+                  'Failed to load weather data',
+                  style: TextStyle(color: Colors.red),
                 ),
-              )
-          ],
+            ],
+          ),
         ),
-      ),
+      ])),
     );
   }
 }
