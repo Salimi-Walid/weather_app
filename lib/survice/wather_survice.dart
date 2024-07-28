@@ -41,4 +41,35 @@ class WeatherService {
     return await Geolocator.getCurrentPosition(
         desiredAccuracy: LocationAccuracy.high);
   }
+
+  Future<List<Map<String, dynamic>>> fetchFiveDayForecast(String city) async {
+    final response = await http.get(Uri.parse(
+        'https://api.openweathermap.org/data/2.5/forecast?q=$city&appid=$apiKey&units=metric'));
+
+    if (response.statusCode == 200) {
+      final Map<String, dynamic> data = json.decode(response.body);
+      final List<dynamic> forecastList = data['list'];
+
+      // استخراج التوقعات اليومية
+      final Map<String, Map<String, dynamic>> dailyForecasts = {};
+
+      for (var forecast in forecastList) {
+        String date = forecast['dt_txt'].split(' ')[0];
+        if (!dailyForecasts.containsKey(date)) {
+          dailyForecasts[date] = forecast;
+        } else {
+          // تحديث الحد الأقصى لدرجة الحرارة إذا كانت درجة الحرارة الحالية أعلى
+          if (forecast['main']['temp_max'] >
+              dailyForecasts[date]!['main']['temp_max']) {
+            dailyForecasts[date]!['main']['temp_max'] =
+                forecast['main']['temp_max'];
+          }
+        }
+      }
+
+      return dailyForecasts.values.toList();
+    } else {
+      throw Exception('Failed to load forecast data');
+    }
+  }
 }

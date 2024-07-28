@@ -17,40 +17,27 @@ class Hompage extends StatefulWidget {
 class _HompageState extends State<Hompage> {
   final WeatherService weatherService = WeatherService();
   Map<String, dynamic>? weatherData;
+  List<Map<String, dynamic>>? fiveDayForecast;
   String city = 'Sidi Slimane';
   bool isLoading = true;
   TextEditingController cityController = TextEditingController();
 
-  //animatin image
-
   @override
   void initState() {
     super.initState();
-    fetchWeather();
+    fetchWeather(city);
   }
 
-  void fetchWeather() async {
+  void fetchWeather(String cityName) async {
     setState(() {
       isLoading = true;
     });
-    //normal data if entre 1er fois citi <sidi slimane> hit diclaration in top
     try {
-      final data = await weatherService.fetchWeather(city);
+      final data = await weatherService.fetchWeather(cityName);
+      final forecast = await weatherService.fetchFiveDayForecast(cityName);
       setState(() {
         weatherData = data;
-        isLoading = false;
-      });
-    } catch (e) {
-      setState(() {
-        isLoading = false;
-      });
-    }
-    // data for secherching in textfeild
-    try {
-      city = cityController.text;
-      final data = await weatherService.fetchWeather(city);
-      setState(() {
-        weatherData = data;
+        fiveDayForecast = forecast;
         isLoading = false;
       });
     } catch (e) {
@@ -60,7 +47,13 @@ class _HompageState extends State<Hompage> {
     }
   }
 
-  //animatin image
+  void onSearch() {
+    String searchCity = cityController.text.trim();
+    if (searchCity.isNotEmpty) {
+      fetchWeather(searchCity);
+    }
+  }
+
   String getAnimationForWeather(String? weatherCondition) {
     if (weatherCondition == null) return 'assets/Thunder and winter.json';
     switch (weatherCondition.toLowerCase()) {
@@ -88,8 +81,9 @@ class _HompageState extends State<Hompage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: SingleChildScrollView(
-          child: Column(children: [
+        body: SingleChildScrollView(
+            child: Column(
+      children: [
         Container(
           width: double.infinity,
           height: 700,
@@ -109,7 +103,7 @@ class _HompageState extends State<Hompage> {
             children: [
               // textfeild for reserching city
               Textfeild(
-                onSearch: fetchWeather,
+                onSearch: onSearch,
                 controller: cityController,
               ),
               // name and date and image
@@ -144,6 +138,7 @@ class _HompageState extends State<Hompage> {
                   '${weatherData!['main']['temp']}°C',
                   style: GoogleFonts.openSans(
                       textStyle: const TextStyle(
+                          backgroundColor: Color.fromARGB(112, 0, 0, 0),
                           color: Color.fromARGB(255, 255, 255, 255),
                           fontSize: 60,
                           fontWeight: FontWeight.bold)),
@@ -261,7 +256,70 @@ class _HompageState extends State<Hompage> {
             ],
           ),
         ),
-      ])),
-    );
+        if (fiveDayForecast != null)
+          Card(
+            color: const Color.fromARGB(255, 161, 204, 255),
+            shadowColor: const Color.fromARGB(255, 1, 100, 220),
+            elevation: 4,
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(30),
+            ),
+            margin: const EdgeInsets.all(15),
+            child: Padding(
+                padding: const EdgeInsets.all(20),
+                child: Column(children: [
+                  Text(
+                    'Forecast for the next 5 days',
+                    style: GoogleFonts.openSans(
+                      textStyle: const TextStyle(
+                        color: Colors.black,
+                        fontSize: 20,
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
+                  ),
+                  Column(
+                    children: fiveDayForecast!.map((day) {
+                      return Padding(
+                        padding: const EdgeInsets.symmetric(vertical: 10),
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            Text(
+                              DateFormat('EE dd/MM ')
+                                  .format(DateTime.parse(day['dt_txt'])),
+                              style: GoogleFonts.openSans(
+                                textStyle: const TextStyle(
+                                  color: Colors.black,
+                                  fontSize: 15,
+                                  fontWeight: FontWeight.bold,
+                                ),
+                              ),
+                            ),
+                            Lottie.asset(
+                              getAnimationForWeather(day['weather'][0]['main']),
+                              width: 50,
+                              height: 50,
+                            ),
+                            // temps for next day
+                            Text(
+                              '${day['main']['temp_max']}°C',
+                              style: GoogleFonts.openSans(
+                                textStyle: const TextStyle(
+                                  color: Colors.black,
+                                  fontSize: 15,
+                                  fontWeight: FontWeight.bold,
+                                ),
+                              ),
+                            ),
+                          ],
+                        ),
+                      );
+                    }).toList(),
+                  ),
+                ])),
+          ),
+      ],
+    )));
   }
 }
