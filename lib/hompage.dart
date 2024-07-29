@@ -265,7 +265,7 @@ class _HompageState extends State<Hompage> {
                   ] else
                     // ila malgach city return this
                     const Text(
-                      'Failed to load weather data',
+                      'NAme of the city is not correct',
                       style: TextStyle(color: Colors.red),
                     ),
                 ],
@@ -334,14 +334,6 @@ class _HompageState extends State<Hompage> {
                       ),
                     ])),
               ),
-            Container(
-              margin: const EdgeInsets.all(15),
-              height: 75,
-              decoration: BoxDecoration(
-                  color: const Color.fromARGB(255, 14, 138, 255),
-                  borderRadius: BorderRadius.circular(20)),
-              child: const Text('ff'),
-            )
           ],
         )));
   }
