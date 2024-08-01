@@ -11,8 +11,9 @@ A Flutter application to display weather information, providing real-time data a
 - **User-Friendly Interface**: Intuitive design for easy navigation and weather data access.
 
 ## Screenshots
-![Home Screen](path_to_screenshot/home_screen.png)
-![Forecast Screen](path_to_screenshot/forecast_screen.png)
+![Home Screen](![Uploading weather app image.png…]()
+)
+
 
 ## Installation
 
