@@ -10,9 +10,9 @@ A Flutter application to display weather information, providing real-time data a
 - **Location-Based Weather**: Automatically fetches weather data based on the user's current location.
 - **User-Friendly Interface**: Intuitive design for easy navigation and weather data access.
 
-## Screenshots
-![Home Screen](![Uploading weather app image.png…]()
-)
+
+## Image
+![weather app image](https://github.com/user-attachments/assets/ab39f317-c654-44cd-a654-6b6daa87a4ff)
 
 
 ## Installation
