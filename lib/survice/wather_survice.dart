@@ -3,7 +3,7 @@ import 'package:geolocator/geolocator.dart';
 import 'package:http/http.dart' as http;
 
 class WeatherService {
-  final String apiKey = '3ef462a2d48cad7f077021a05c1484f5';
+  final String apiKey = 'apikey';
   final String apiUrl = 'http://api.openweathermap.org/data/2.5/weather';
 
   Future<Map<String, dynamic>> fetchWeather(String city) async {
